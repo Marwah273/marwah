@@ -77,7 +77,10 @@ if ($hasChanges) {
     Write-Host "No new changes to commit."
 }
 
-$existingRemote = (git remote get-url origin 2>$null)
+$existingRemote = (& git remote get-url origin 2>$null)
+if ($LASTEXITCODE -ne 0) {
+    $existingRemote = $null
+}
 if (-not $RepoUrl -and -not $existingRemote) {
     $RepoUrl = Read-Host "Paste your GitHub repo URL (example: https://github.com/USERNAME/grades4.git)"
 }
@@ -90,7 +93,10 @@ if ($RepoUrl) {
     }
 }
 
-$remoteAfter = (git remote get-url origin 2>$null)
+$remoteAfter = (& git remote get-url origin 2>$null)
+if ($LASTEXITCODE -ne 0) {
+    $remoteAfter = $null
+}
 if (-not $remoteAfter) {
     Write-Host "No origin remote set. I opened GitHub create-repo page for you."
     Start-Process "https://github.com/new"
