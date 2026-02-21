@@ -45,8 +45,16 @@ def inject_lang():
 
 
 def ensure_tables():
-    """Ensure the grades table exists (safe to call on startup)."""
+    """Ensure all required tables exist (safe to call on startup)."""
     db = get_db()
+    db.execute('''
+    CREATE TABLE IF NOT EXISTS students (
+        student_id TEXT PRIMARY KEY,
+        full_name TEXT NOT NULL,
+        score REAL,
+        max_score REAL
+    )
+    ''')
     db.execute('''
     CREATE TABLE IF NOT EXISTS grades (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
