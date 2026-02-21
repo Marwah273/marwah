@@ -98,6 +98,16 @@ def ensure_class_name_column():
         db.commit()
 
 
+def initialize_database():
+    with app.app_context():
+        ensure_tables()
+        ensure_share_token_column()
+        ensure_class_name_column()
+
+
+initialize_database()
+
+
 def get_client_ip():
     """Return the real client IP, honoring X-Forwarded-For when TRUSTED_PROXIES is set.
 
@@ -554,11 +564,7 @@ def student_link(student_id):
 
 
 if __name__ == '__main__':
-    # ensure grades table exists when starting
-    with app.app_context():
-        ensure_tables()
-        ensure_share_token_column()
-        ensure_class_name_column()
+    initialize_database()
     # Print helpful startup info (parsed TRUSTED_PROXIES and LAN URL) to help
     # when accessing the app from other devices on the same network.
     parsed_proxies = [p.strip() for p in TRUSTED_PROXIES.split(',') if p.strip()]
