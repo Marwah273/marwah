@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Manage Grades — {{ student['student_id'] }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h1>{% if request.args.get('lang') == 'ar' %}إدارة درجات {{ student['full_name'] }}{% else %}Manage Grades for {{ student['full_name'] }}{% endif %}</h1>
+      <div>
+        {% if request.args.get('lang') == 'ar' %}
+          <a class="back" href="?">English</a>
+        {% else %}
+          <a class="back" href="?lang=ar">عربي</a>
+        {% endif %}
+      </div>
+    </div>
+    <p class="hint">{% if request.args.get('lang') == 'ar' %}الفصل:{% else %}Class:{% endif %} {{ student['class_name'] or '-' }}</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="hint">
+          {% for m in messages %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h2>{% if request.args.get('lang') == 'ar' %}إضافة اختبار{% else %}Add Exam{% endif %}</h2>
+    <form method="post">
+      <label for="exam_name">{% if request.args.get('lang') == 'ar' %}اسم الاختبار{% else %}Exam name{% endif %}</label>
+      <input id="exam_name" name="exam_name" type="text" required>
+
+      <label for="score">{% if request.args.get('lang') == 'ar' %}الدرجة{% else %}Score{% endif %}</label>
+      <input id="score" name="score" type="number" step="0.1" required>
+
+      <label for="max_score">{% if request.args.get('lang') == 'ar' %}الحد الأقصى{% else %}Max score{% endif %}</label>
+      <input id="max_score" name="max_score" type="number" step="0.1" value="100">
+
+      <button type="submit">Add Exam</button>
+    </form>
+
+    <h2 style="margin-top:18px">{% if request.args.get('lang') == 'ar' %}الاختبارات الموجودة{% else %}Existing Exams{% endif %}</h2>
+    {% if grades %}
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="text-align:left;color:var(--muted)"><th>{% if request.args.get('lang') == 'ar' %}الاختبار{% else %}Exam{% endif %}</th><th>{% if request.args.get('lang') == 'ar' %}الدرجة{% else %}Score{% endif %}</th><th>{% if request.args.get('lang') == 'ar' %}الحد الأقصى{% else %}Max{% endif %}</th><th></th></tr></thead>
+        <tbody>
+          {% for g in grades %}
+            <tr>
+              <td>{{ g['exam_name'] }}</td>
+              <td>{{ g['score'] }}</td>
+              <td>{{ g['max_score'] }}</td>
+              <td><a class="back" href="{{ url_for('admin_delete_grade', student_id=student['student_id'], grade_id=g['id']) }}">{% if request.args.get('lang') == 'ar' %}حذف{% else %}Delete{% endif %}</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="hint">No exams yet.</p>
+    {% endif %}
+
+    <hr style="margin:18px 0">
+    <h2>Shareable Link</h2>
+    {% if share_token %}
+      <p class="hint">Share link (copy):
+        <span id="share-url">{{ request.host_url }}student/{{ student['student_id'] }}?t=••••••••</span>
+        <button id="copy-share" data-student="{{ student['student_id'] }}" data-token="{{ share_token }}">Copy link</button>
+      </p>
+      <form method="post" action="{{ url_for('admin_revoke_share', student_id=student['student_id']) }}">
+        <button type="submit" style="background:#c33;color:#fff;padding:8px 10px;border-radius:6px;border:0">Revoke share link</button>
+      </form>
+    {% else %}
+      <form method="post" action="{{ url_for('admin_generate_share', student_id=student['student_id']) }}">
+        <button type="submit">Generate share link</button>
+      </form>
+    {% endif %}
+
+    <div style="margin-top:12px">
+      <a class="back" href="/admin/list">← Back to list</a>
+    </div>
+  </main>
+  <script src="/static/copy.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Grade 4 Math Results</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <meta name="description" content="Enter Student ID to view Grade 4 Math exam results.">
+ </head>
+<body>
+  <main class="card">
+    <h1>Grade 4 Math Results</h1>
+    <p class="lead">Parents: enter your child's Student ID to view the result.</p>
+    <form action="/result" method="post" novalidate>
+      <label for="student_id">Student ID</label>
+      <input id="student_id" name="student_id" type="text" inputmode="text" pattern="[A-Za-z0-9-]{3,12}" placeholder="e.g. S1001" required maxlength="12">
+      <button type="submit">Check Result</button>
+    </form>
+    <p class="hint">We protect privacy—only Student ID is required.</p>
+    <!-- Admin token link removed from public index for privacy -->
+  </main>
+</body>
+</html>

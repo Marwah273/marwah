@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Admin Login</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="hint">
+          {% for m in messages %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if warn %}
+      <p class="error">{{ warn }}</p>
+    {% endif %}
+
+    <form method="post">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required>
+      <button type="submit">Login</button>
+    </form>
+    {# Admin token-login link hidden to avoid exposing tokens publicly #}
+    <a class="back" href="/">← Back</a>
+  </main>
+</body>
+</html>

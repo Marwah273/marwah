@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+
+# Runtime files
+*.pid
+*.log
+app.pid
+localhostrun.pid
+ngrok.pid
+public_link.txt
+
+# Databases and local data
+*.db
+*.sqlite
+*.sqlite3
+
+# OS/editor
+.vscode/
+.DS_Store
+Thumbs.db

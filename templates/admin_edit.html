@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Edit Student</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>{% if lang=='ar' %}تحرير الطالب{% else %}Edit Student{% endif %}</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="hint">
+          {% for m in messages %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post">
+      <label for="student_id">{% if lang=='ar' %}رمز الطالب{% else %}Student ID{% endif %}</label>
+      <input id="student_id" name="student_id" type="text" value="{{ student['student_id'] }}" readonly>
+
+      <label for="full_name">{% if lang=='ar' %}الاسم الكامل{% else %}Full name{% endif %}</label>
+      <input id="full_name" name="full_name" type="text" value="{{ student['full_name'] }}" required>
+
+      <label for="class_name">{% if lang=='ar' %}الفصل{% else %}Class{% endif %}</label>
+      <input id="class_name" name="class_name" type="text" value="{{ student['class_name'] or '' }}">
+
+      <button type="submit">{% if lang=='ar' %}حفظ{% else %}Save{% endif %}</button>
+    </form>
+
+    <form id="deleteForm" method="post" action="{{ url_for('admin_delete_student', student_id=student['student_id']) }}" style="margin-top:12px">
+      <button type="submit" style="background:#b91c1c">{% if lang=='ar' %}حذف الطالب{% else %}Delete student{% endif %}</button>
+    </form>
+
+    <div style="margin-top:12px">
+      <a class="back" href="/admin/list">← {% if lang=='ar' %}عودة{% else %}Back{% endif %}</a>
+    </div>
+  </main>
+  <script>
+    document.getElementById('deleteForm').addEventListener('submit', function(e){
+      if (!confirm('Delete this student and all their exams?')) e.preventDefault();
+    });
+  </script>
+</body>
+</html>

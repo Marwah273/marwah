@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if lang=='ar' %}درجات الطالبة{% else %}Student Results for {{ student_id }}{% endif %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+ </head>
+<body>
+  <main class="card">
+    <h1>{% if lang=='ar' %}درجات الطالبة{% else %}Student Results{% endif %}</h1>
+    <p><strong>{% if lang=='ar' %}الاسم:{% else %}Name:{% endif %}</strong> {{ name }}</p>
+    <p><strong>{% if lang=='ar' %}الفصل:{% else %}Class:{% endif %}</strong> {{ class_name or '-' }}</p>
+    <p><strong>{% if lang=='ar' %}رمز الطالب:{% else %}Student ID:{% endif %}</strong> {{ student_id }}</p>
+
+    {% if exams and exams|length > 0 %}
+      <h2>{% if lang=='ar' %}نتائج الطالبة{% else %}Student Results{% endif %}</h2>
+      <div class="exams">
+        {% for e in exams %}
+          <div class="exam-card">
+            <div class="exam-header">
+              <strong class="exam-name">{{ e.exam_name }}</strong>
+              <span class="exam-grade">{{ e.grade }}</span>
+            </div>
+            <div class="exam-body">
+              <div><small>{% if lang=='ar' %}الدرجة{% else %}Score{% endif %}</small><div class="exam-value">{{ e.score }}</div></div>
+              <div><small>{% if lang=='ar' %}الحد{% else %}Max{% endif %}</small><div class="exam-value">{{ e.max_score }}</div></div>
+              {# percentage column removed per request #}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="hint">{% if lang=='ar' %}لا توجد درجات لهذا الطالب.{% else %}No exam grades found for this student.{% endif %}</p>
+    {% endif %}
+
+    <a class="back" href="/">← {% if lang=='ar' %}تحقق عن طالب آخر{% else %}Check another{% endif %}</a>
+  </main>
+</body>
+</html>

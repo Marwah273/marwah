@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Students</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Students</h1>
+    <form method="get" style="margin-bottom:12px">
+      <input name="q" type="search" placeholder="Search by ID or name" value="{{ q }}" style="width:70%;padding:8px;border-radius:6px;border:1px solid #e6eef6">
+      <button type="submit" style="padding:8px 10px;border-radius:6px">Search</button>
+    </form>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div>{% if lang == 'ar' %}{{ total }} طالب{% else %}{{ total }} students{% endif %}</div>
+      <div>
+        <a class="back" href="/admin/export">Export CSV</a>
+        <span style="margin:0 8px">•</span>
+        <a class="back" href="/admin/import">Import CSV</a>
+        <form id="migrateForm" method="post" action="/admin/migrate" style="display:inline;margin-left:8px">
+          <button type="submit" style="padding:6px 8px;border-radius:6px">Migrate scores</button>
+        </form>
+        <script>
+          document.addEventListener('DOMContentLoaded', function(){
+            var f = document.getElementById('migrateForm');
+            if (f) f.addEventListener('submit', function(e){
+              if (!confirm('Are you sure you want to migrate existing student scores into the grades table? This will clear the old score fields.')) e.preventDefault();
+            });
+          });
+        </script>
+      </div>
+    </div>
+    {% if rows %}
+      <div class="students-grid">
+        {% for r in rows %}
+          <div class="student-box">
+            <div class="student-head">
+              <div class="student-name">{{ r['full_name'] }}</div>
+              <div class="student-id">{{ r['student_id'] }}</div>
+            </div>
+            <div class="student-meta">
+              <span>{% if request.args.get('lang') == 'ar' %}الفصل{% else %}Class{% endif %}: {{ r['class_name'] or '-' }}</span>
+              <span>{% if request.args.get('lang') == 'ar' %}الدرجة{% else %}Score{% endif %}: {{ r['score'] }} / {{ r['max_score'] }}</span>
+            </div>
+            <div class="student-actions">
+              <a class="back" href="{{ url_for('result') }}?student_id={{ r['student_id'] }}" target="_blank">View</a>
+              <span style="margin:0 6px">•</span>
+              <a class="back" href="{{ url_for('admin_student', student_id=r['student_id']) }}">Manage</a>
+              <span style="margin:0 6px">•</span>
+              <a class="back" href="{{ url_for('admin_edit', student_id=r['student_id']) }}">Edit</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="hint">No students found.</p>
+    {% endif %}
+      <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <a class="back" href="/admin/add">Add student</a>
+          <span style="margin:0 8px">•</span>
+          <a class="back" href="/admin/logout">Logout</a>
+        </div>
+        <div>
+          {% if total_pages > 1 %}
+            {% if page > 1 %}<a class="back" href="?q={{ q }}&page={{ page-1 }}&per={{ per_page }}">← Prev</a>{% endif %}
+            <span style="margin:0 8px">Page {{ page }} / {{ total_pages }}</span>
+            {% if page < total_pages %}<a class="back" href="?q={{ q }}&page={{ page+1 }}&per={{ per_page }}">Next →</a>{% endif %}
+          {% endif %}
+        </div>
+      </div>
+  </main>
+</body>
+</html>

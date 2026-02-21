@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Import CSV</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Import CSV</h1>
+    <p class="lead">Upload a CSV with columns: <strong>student_id,full_name,exam_name,score,max_score</strong></p>
+    <form method="post" enctype="multipart/form-data">
+      <input type="file" name="csvfile" accept=".csv" required>
+      <button type="submit">Upload</button>
+    </form>
+    <div style="margin-top:12px">
+      <a class="back" href="/admin/list">← Back to list</a>
+    </div>
+  </main>
+</body>
+</html>

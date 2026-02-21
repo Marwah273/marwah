@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="{{ 'ar' if lang=='ar' else 'en' }}" dir="{{ 'rtl' if lang=='ar' else 'ltr' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Access Required</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>{% if lang=='ar' %}مطلوب رمز الزيارة{% else %}Access Required{% endif %}</h1>
+    <p class="hint">{% if lang=='ar' %}للوصول إلى درجات الطالب، الرجاء استخدام الرابط الذي يتضمن رمز الزيارة.{% else %}This student link requires a shared access token. Include the token as `?t=TOKEN` in the URL.{% endif %}</p>
+    <p style="margin-top:12px">{% if lang=='ar' %}مثال:{% else %}Example:{% endif %} <code>{{ request.host_url }}student/{{ student_id }}?t=YOUR_TOKEN</code></p>
+    <a class="back" href="/">← {% if lang=='ar' %}عودة{% else %}Back{% endif %}</a>
+  </main>
+</body>
+</html>

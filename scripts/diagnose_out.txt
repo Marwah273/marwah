@@ -1,0 +1,56 @@
+﻿--- netstat (port 5000) ---
+
+  TCP    0.0.0.0:5000           0.0.0.0:0              LISTENING       3380
+  TCP    192.168.100.79:3662    192.168.100.79:5000    TIME_WAIT       0
+
+
+--- Get-NetTCPConnection ---
+
+
+LocalAddress   : 0.0.0.0
+LocalPort      : 5000
+RemoteAddress  : 0.0.0.0
+RemotePort     : 0
+State          : Listen
+AppliedSetting : 
+OwningProcess  : 3380
+CreationTime   : 2/21/2026 3:50:20 PM
+OffloadState   : InHost
+
+
+
+--- Process using port 5000 ---
+
+  Id ProcessName
+  -- -----------
+3380 pythonw    
+
+
+--- LAN IPs ---
+
+IPAddress      InterfaceAlias
+---------      --------------
+192.168.100.79 Wi-Fi         
+
+
+--- Network profile ---
+
+Name            NetworkCategory
+----            ---------------
+Arefs 2.4 Ghz 8          Public
+
+
+--- Firewall rules allowing port 5000 ---
+
+DisplayName                             Enabled Direction
+-----------                             ------- ---------
+Airhost service for Zoom Video Meetings    True   Inbound
+Grades4-Allow-5000                         True   Inbound
+
+
+--- HTTP test to 127.0.0.1:5000 ---
+Status: 200
+--- HTTP test to LAN IPs ---
+Testing http://192.168.100.79:5000
+Status: 200
+--- Done ---

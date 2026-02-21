@@ -1,0 +1,49 @@
+:root{--bg:#fdf7ff;--card:#fff9fd;--accent:#1565c0;--muted:#6b7280;--card-light-1:#eaf4ff;--card-light-2:#fff0d9;--card-light-3:#efe9ff}
+*{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#fff3fb)}
+main.card{max-width:520px;margin:6vh auto;padding:20px;border-radius:12px;background:var(--card);box-shadow:0 6px 24px rgba(16,24,40,.08);text-align:center}
+h1{margin:0 0 8px;font-size:1.25rem;color:var(--accent)}
+.lead{color:var(--muted);margin-bottom:16px}
+label{display:block;text-align:left;margin:8px 0 4px;font-weight:600}
+input[type=text]{width:100%;padding:12px;border:1px solid #e6eef6;border-radius:8px;font-size:1rem}
+button{margin-top:12px;width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:1rem}
+.hint{margin-top:12px;color:var(--muted);font-size:.9rem}
+.error{color:#b91c1c}
+.back{display:inline-block;margin-top:14px;color:var(--accent);text-decoration:none}
+@media (max-width:420px){main.card{margin:4vh 12px;padding:16px}}
+/* RTL support when html dir=rtl */
+html[dir="rtl"] main.card{text-align:right}
+html[dir="rtl"] label{text-align:right}
+html[dir="rtl"] input[type=text], html[dir="rtl"] input[type=number]{direction:rtl}
+
+/* Exam card styles for result page */
+.exams{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.exam-card{background:var(--card);border:1px solid #eef6fb;padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,.04);text-align:left;transition:transform .12s ease,box-shadow .12s ease}
+.exam-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(16,24,40,.08)}
+
+/* soft alternating light colors for better visual grouping */
+.exams .exam-card:nth-child(3n+1){background:var(--card-light-1);border-color:#cfe6ff}
+.exams .exam-card:nth-child(3n+2){background:var(--card-light-2);border-color:#ffe0b3}
+.exams .exam-card:nth-child(3n+3){background:var(--card-light-3);border-color:#ddd2ff}
+.exam-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.exam-name{font-weight:700;color:var(--accent)}
+.exam-grade{background:var(--accent);color:#fff;padding:4px 8px;border-radius:8px;font-weight:700}
+.exam-body{display:flex;justify-content:space-between;gap:8px}
+.exam-body div{flex:1}
+.exam-value{font-weight:700;margin-top:4px}
+
+/* Ensure RTL presentation looks correct */
+html[dir="rtl"] .exam-card{direction:rtl;text-align:right}
+
+/* Admin students list as rectangular boxes */
+.students-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px;text-align:left}
+.student-box{background:#fff;border:1px solid #e6eef6;border-radius:10px;padding:12px;box-shadow:0 4px 14px rgba(16,24,40,.05)}
+.student-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.student-name{font-weight:700;color:var(--accent)}
+.student-id{color:var(--muted);font-size:.9rem}
+.student-meta{display:flex;flex-direction:column;gap:4px;color:#374151;font-size:.92rem}
+.student-actions{margin-top:10px}
+.student-actions .back{margin-top:0}
+
+html[dir="rtl"] .students-grid{text-align:right}
+html[dir="rtl"] .student-head{direction:rtl}
