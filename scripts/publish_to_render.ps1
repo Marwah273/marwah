@@ -49,6 +49,14 @@ function Ensure-Git {
 
 Ensure-Git
 
+function Get-OriginRemoteUrl {
+    $remoteNames = @(git remote)
+    if ($remoteNames -contains 'origin') {
+        return ((git remote get-url origin) | Select-Object -First 1)
+    }
+    return $null
+}
+
 if (-not (Test-Path (Join-Path $root '.git'))) {
     git init | Out-Host
 }
@@ -77,10 +85,7 @@ if ($hasChanges) {
     Write-Host "No new changes to commit."
 }
 
-$existingRemote = (& git remote get-url origin 2>$null)
-if ($LASTEXITCODE -ne 0) {
-    $existingRemote = $null
-}
+$existingRemote = Get-OriginRemoteUrl
 if (-not $RepoUrl -and -not $existingRemote) {
     $RepoUrl = Read-Host "Paste your GitHub repo URL (example: https://github.com/USERNAME/grades4.git)"
 }
@@ -93,10 +98,7 @@ if ($RepoUrl) {
     }
 }
 
-$remoteAfter = (& git remote get-url origin 2>$null)
-if ($LASTEXITCODE -ne 0) {
-    $remoteAfter = $null
-}
+$remoteAfter = Get-OriginRemoteUrl
 if (-not $remoteAfter) {
     Write-Host "No origin remote set. I opened GitHub create-repo page for you."
     Start-Process "https://github.com/new"
